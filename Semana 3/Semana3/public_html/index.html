@@ -58,16 +58,16 @@
         var str = "";
         var k = shaderScript.firstChild;
         while (k) {
-            if (k.nodeType == 3) {
+            if (k.nodeType === 3) {
                 str += k.textContent;
             }
             k = k.nextSibling;
         }
 
         var shader;
-        if (shaderScript.type == "x-shader/x-fragment") {
+        if (shaderScript.type === "x-shader/x-fragment") {
             shader = gl.createShader(gl.FRAGMENT_SHADER);
-        } else if (shaderScript.type == "x-shader/x-vertex") {
+        } else if (shaderScript.type === "x-shader/x-vertex") {
             shader = gl.createShader(gl.VERTEX_SHADER);
         } else {
             return null;
@@ -178,6 +178,8 @@
         mat4.translate(mvMatrix, [-1.5, 0.0, -7.0]);
         gl.bindBuffer(gl.ARRAY_BUFFER, triangleVertexPositionBuffer);
         gl.vertexAttribPointer(shaderProgram.vertexPositionAttribute, triangleVertexPositionBuffer.itemSize, gl.FLOAT, false, 0, 0);
+        gl.bindBuffer(gl.ARRAY_BUFFER, triangleVertexColorBuffer);
+        gl.vertexAttribPointer(shaderProgram.vertexColorAttribute, triangleVertexColorBuffer.itemSize, gl.FLOAT, false, 0,0);
         setMatrixUniforms();
         gl.drawArrays(gl.TRIANGLES, 0, triangleVertexPositionBuffer.numItems);
 
