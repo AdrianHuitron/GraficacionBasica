@@ -8,27 +8,25 @@
     #ifdef GL_ES
     precision highp float;
     #endif
-    
-    varying vec4 vcolor;
+    varying vec4 vcolor;//semana 3
 
     void main(void) {
         //gl_FragColor = vec4(1.0, 1.0, 1.0, 1.0);
-        gl_FragColor = vcolor;
+        gl_FragColor=vcolor;//semana 3
     }
 </script>
 
 <script id="shader-vs" type="x-shader/x-vertex">
     attribute vec3 aVertexPosition;
-    attribute vec4 aVertexColor;
+    attribute vec4 aVertexColor;//semana 3
 
     uniform mat4 uMVMatrix;
     uniform mat4 uPMatrix;
-    
-    varying vec4 vcolor;
+    varying vec4 vcolor;//semana 3
 
     void main(void) {
         gl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition, 1.0);
-        vcolor = aVertexColor;
+        vcolor=aVertexColor;//semana 3
     }
 </script>
 
@@ -58,16 +56,16 @@
         var str = "";
         var k = shaderScript.firstChild;
         while (k) {
-            if (k.nodeType === 3) {
+            if (k.nodeType == 3) {
                 str += k.textContent;
             }
             k = k.nextSibling;
         }
 
         var shader;
-        if (shaderScript.type === "x-shader/x-fragment") {
+        if (shaderScript.type == "x-shader/x-fragment") {
             shader = gl.createShader(gl.FRAGMENT_SHADER);
-        } else if (shaderScript.type === "x-shader/x-vertex") {
+        } else if (shaderScript.type == "x-shader/x-vertex") {
             shader = gl.createShader(gl.VERTEX_SHADER);
         } else {
             return null;
@@ -105,8 +103,8 @@
         shaderProgram.vertexPositionAttribute = gl.getAttribLocation(shaderProgram, "aVertexPosition");
         gl.enableVertexAttribArray(shaderProgram.vertexPositionAttribute);
         
-        shaderProgram.vertexPositionAttribute = gl.getAttribLocation(shaderProgram, "aVertexColor")
-        gl.enableVertexAttribArray(shaderProgram.vertexPositionAttribute);
+        shaderProgram.vertexColorAttribute=gl.getAttribLocation(shaderProgram, "aVertexColor");//semana 3
+        gl.enableVertexAttribArray(shaderProgram.vertexColorAttribute);//semana 3
 
         shaderProgram.pMatrixUniform = gl.getUniformLocation(shaderProgram, "uPMatrix");
         shaderProgram.mvMatrixUniform = gl.getUniformLocation(shaderProgram, "uMVMatrix");
@@ -124,10 +122,10 @@
 
 
     var triangleVertexPositionBuffer;
-    var triangleVertexColorBuffer;
+    var triangleVertexColorBuffer;//semana 3
     
     var squareVertexPositionBuffer;
-    var squareVertexColorBuffer;
+    var squareVertexColorBuffer;//semana 3
 
     function initBuffers() {
         triangleVertexPositionBuffer = gl.createBuffer();
@@ -141,18 +139,17 @@
         triangleVertexPositionBuffer.itemSize = 3;
         triangleVertexPositionBuffer.numItems = 3;
         
-        triangleVertexColorBuffer = gl.createBuffer();
-        gl.bindBuffer(gl.ARRAY_BUFFER, triangleVertexColorBuffer);
-        var colors = [
-          //r     g    b    a
-            1.0, 0.0, 0.0, 1,0,
+        triangleVertexColorBuffer=gl.createBuffer();//semana 3
+        gl.bindBuffer(gl.ARRAY_BUFFER,triangleVertexColorBuffer);//semana3
+        var colors= [
+            1.0, 0.0, 0.0, 1.0,
             0.0, 1.0, 0.0, 1.0,
-            0.0, 0.0, 1.0, 1,0
-        ];
-        gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(colors), gl.STATIC_DRAW);
-        triangleVertexColorBuffer.itemSize = 4;
-        triangleVertexColorBuffer.numItems = 3;
-
+            0.0, 0.0, 1.0, 1.0
+        ]; //semana3
+        gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(colors), gl.STATIC_DRAW);//semana3
+        triangleVertexColorBuffer.itemSize=4;//semana3
+        triangleVertexColorBuffer.itemSize=3;//semana3
+        
         squareVertexPositionBuffer = gl.createBuffer();
         gl.bindBuffer(gl.ARRAY_BUFFER, squareVertexPositionBuffer);
         vertices = [
@@ -178,11 +175,10 @@
         mat4.translate(mvMatrix, [-1.5, 0.0, -7.0]);
         gl.bindBuffer(gl.ARRAY_BUFFER, triangleVertexPositionBuffer);
         gl.vertexAttribPointer(shaderProgram.vertexPositionAttribute, triangleVertexPositionBuffer.itemSize, gl.FLOAT, false, 0, 0);
-        gl.bindBuffer(gl.ARRAY_BUFFER, triangleVertexColorBuffer);
-        gl.vertexAttribPointer(shaderProgram.vertexColorAttribute, triangleVertexColorBuffer.itemSize, gl.FLOAT, false, 0,0);
+        gl.bindBuffer(gl.ARRAY_BUFFER,triangleVertexColorBuffer);//semana3
+        gl.vertexAttribPointer(shaderProgram.vertexColorAttribute,triangleVertexColorBuffer.itemSize, gl.FLOAT, false, 0,0);//semana3
         setMatrixUniforms();
         gl.drawArrays(gl.TRIANGLES, 0, triangleVertexPositionBuffer.numItems);
-
 
         mat4.translate(mvMatrix, [3.0, 0.0, 0.0]);
         gl.bindBuffer(gl.ARRAY_BUFFER, squareVertexPositionBuffer);
@@ -199,7 +195,7 @@
         initShaders();
         initBuffers();
 
-        gl.clearColor(0.6, 0.0, 0.8, 1.0);
+        gl.clearColor(0.6, 0.0, 0.8, 1.);
         gl.enable(gl.DEPTH_TEST);
 
         drawScene();
@@ -214,7 +210,7 @@
 
 <body onload="webGLStart();">
 
-    <canvas id="leccion1-canvas" style="border: none;" width="800" height="500"></canvas>
+    <canvas id="leccion1-canvas" style="border: none;" width="500" height="500"></canvas>
 
 
 
