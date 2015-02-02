@@ -1,4 +1,4 @@
-<html><head><meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<head><meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
 <title>Aprende webGL — Leccion 1</title>
 
 
@@ -120,9 +120,9 @@
         triangleVertexPositionBuffer = gl.createBuffer();
         gl.bindBuffer(gl.ARRAY_BUFFER, triangleVertexPositionBuffer);
         var vertices = [
-             0.0,  1.0,  0.0,
-            -1.0, -1.0,  0.0,
-             1.0, -1.0,  0.0
+             0.0,  2.0,  0.0,
+            -2.0, -2.0,  0.0,
+             2.0, -2.0,  0.0
         ];
         gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
         triangleVertexPositionBuffer.itemSize = 3;
@@ -131,10 +131,10 @@
         squareVertexPositionBuffer = gl.createBuffer();
         gl.bindBuffer(gl.ARRAY_BUFFER, squareVertexPositionBuffer);
         vertices = [
-             1.0,  1.0,  0.0,
-            -1.0,  1.0,  0.0,
-             1.0, -1.0,  0.0,
-            -1.0, -1.0,  0.0
+             2.0,  2.0,  0.0,
+            -2.0,  2.0,  0.0,
+             2.0, -2.0,  0.0,
+            -2.0, -2.0,  0.0
         ];
         gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
         squareVertexPositionBuffer.itemSize = 3;
@@ -146,23 +146,32 @@
         gl.viewport(0, 0, gl.viewportWidth, gl.viewportHeight);
         gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
-        mat4.perspective(45, gl.viewportWidth / gl.viewportHeight, 0.1, 100.0, pMatrix);
-
+        mat4.perspective(40, gl.viewportWidth / gl.viewportHeight, 0.1, 100.0, pMatrix);
+		// cambiando el numero la imagen parece haber crecido, pero realmente se hizo un efecto de zoom-out en la perspectiva, mientras más grande el numero más se aleja.
+		// con 30 se ve bastante cerca y por consecuencia no se alcanza a ver el cuadrado
+                // //con 35 aunque muy grande, ya se distingue el cuadro y en 40 se aleja un poco.
+		// con 90 se ven muy pequeñas y en 150 muchisimo más pequeñas. 
         mat4.identity(mvMatrix);
 
-        mat4.translate(mvMatrix, [-1.5, 0.0, -7.0]);
+        mat4.translate(mvMatrix, [-3.0, 0.0, -14.0]);
         gl.bindBuffer(gl.ARRAY_BUFFER, triangleVertexPositionBuffer);
         gl.vertexAttribPointer(shaderProgram.vertexPositionAttribute, triangleVertexPositionBuffer.itemSize, gl.FLOAT, false, 0, 0);
         setMatrixUniforms();
         gl.drawArrays(gl.TRIANGLES, 0, triangleVertexPositionBuffer.numItems);
 
 
-        mat4.translate(mvMatrix, [3.0, 0.0, 0.0]);
+        mat4.translate(mvMatrix, [6.0, 0.0, 0.0]);
         gl.bindBuffer(gl.ARRAY_BUFFER, squareVertexPositionBuffer);
         gl.vertexAttribPointer(shaderProgram.vertexPositionAttribute, squareVertexPositionBuffer.itemSize, gl.FLOAT, false, 0, 0);
         setMatrixUniforms();
         gl.drawArrays(gl.TRIANGLE_STRIP, 0, squareVertexPositionBuffer.numItems);
-    }
+		
+		// usando gl.POINTS solo aparece el cuadro morado (canvas) sin figuras.
+		// usando gl.LINES solo imprime una linea del triangulo y dos lineas del cuadrado
+		// usando gl.LINES_STRIP muestra dos lineas del triangulo y muestra las lineas del cuadrado en forma de Z
+		// usando gl.LINE_LOOP muestra el triangulo sin rellenar (lineas solamente) y el cuadrado con lineas cruzadas.
+        // usando gl.TRIANGLE_FAN se muestra el triangulo completo y al cuadrado le falta un pedazo
+	}
 
 
 
