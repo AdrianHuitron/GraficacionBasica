@@ -131,24 +131,28 @@
         triangleVertexPositionBuffer = gl.createBuffer();
         gl.bindBuffer(gl.ARRAY_BUFFER, triangleVertexPositionBuffer);
         var vertices = [
-             0.0,  1.0,  0.0,
-            -1.0, -1.0,  0.0,
-             1.0, -1.0,  0.0
+             1.0,  0.0, 1.0, //a
+            -1.0, 0.0, 1.0, //b
+             1.0, 0.0, -1.0, //c
+            -1.0, 0.0, -1.0,//d
+             0.0, 1.0, 0.0//e
         ];
         gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
         triangleVertexPositionBuffer.itemSize = 3;
-        triangleVertexPositionBuffer.numItems = 3;
+        triangleVertexPositionBuffer.numItems = 5;
         
         triangleVertexColorBuffer=gl.createBuffer();
         gl.bindBuffer(gl.ARRAY_BUFFER,triangleVertexColorBuffer);
         var colors= [
             1.0, 0.0, 0.0, 1.0,
             0.0, 1.0, 0.0, 1.0,
+            0.0, 0.0, 1.0, 1.0,
+            0.0, 0.0, 1.0, 1.0,
             0.0, 0.0, 1.0, 1.0
         ]; //semana3
         gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(colors), gl.STATIC_DRAW);
         triangleVertexColorBuffer.itemSize=4;
-        triangleVertexColorBuffer.itemSize=3;
+        triangleVertexColorBuffer.numItems=5;
         
         squareVertexPositionBuffer = gl.createBuffer();
         gl.bindBuffer(gl.ARRAY_BUFFER, squareVertexPositionBuffer);
@@ -175,7 +179,7 @@
         mat4.translate(mvMatrix, [-1.5, 0.0, -7.0]);
         
         mvPushMatrix();
-        mat4.rotate(mvMatrix, degToRad(rTri), [0, 1, 0]);
+        mat4.rotate(mvMatrix, degToRad(rTri), [1, 0, 0]);
         
         
         gl.bindBuffer(gl.ARRAY_BUFFER, triangleVertexPositionBuffer);
@@ -183,7 +187,7 @@
         gl.bindBuffer(gl.ARRAY_BUFFER,triangleVertexColorBuffer);
         gl.vertexAttribPointer(shaderProgram.vertexColorAttribute,triangleVertexColorBuffer.itemSize, gl.FLOAT, false, 0,0);
         setMatrixUniforms();
-        gl.drawArrays(gl.TRIANGLES, 0, triangleVertexPositionBuffer.numItems);
+        gl.drawArrays(gl.TRIANGLE_STRIP, 0, triangleVertexPositionBuffer.numItems);
         
         mvPopMatrix();
 
